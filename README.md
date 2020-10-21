@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="https://developers.google.com/learn/topics/functions">Serverless com o Google Cloud Functions - GCF 🔗 </span>
+    <a href="https://developers.google.com/learn/topics/functions">Serverless com o Google Cloud Functions - GCF 🔗 </a>
 </h1>
 
 ### ⌨️ Especificações
