@@ -1,19 +1,24 @@
-# Nome do projeto
+<h1 align="center">
+    <span href="">Serverless com o Google Cloud Functions - GCF 🔗 </span>
+</h1>
 
-Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.
+### ⌨️ Especificações
 
-## Alunos integrantes da equipe
+1. A aplicação móvel deve exibir o mapa da localização atual do telefone.
+2. A aplicação móvel deve rastrear a localização do usuário.
+3. A cada atualização de localização, a aplicação móvel deve invocar a função lambda do GCF.
+4. A função lambda deve verificar se o aparelho se encontra a menos de 100 metros de alguma unidade da PUC Minas e retornar para o celular a mensagem
+**"Bem vindo à PUC Minas unidade " + <nome da unidade mais próxima>.**
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+### :busts_in_silhouette: Alunos
 
-## Professores responsáveis
+* Matheus Santos Rosa Carneiro - [mcarneirobug](https://github.com/mcarneirobug)
+* Raissa Carolina Vilela da Silva - [raissavilela](https://github.com/raissavilela)
 
-* Nome completo do professor 1
-* Nome completo do professor 2
+### 📝 Professor responsável
 
-## Instruções de utilização
+* Hugo Bastos de Paula - [hugodepaula](https://github.com/hugodepaula)
 
-Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
+<h4 align="center"> 
+	🚧 Serveless GCF 🚀 em andamento... 🚧
+</h4>
