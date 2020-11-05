@@ -14,6 +14,7 @@
 
 * Matheus Santos Rosa Carneiro - [mcarneirobug](https://github.com/mcarneirobug)
 * Raissa Carolina Vilela da Silva - [raissavilela](https://github.com/raissavilela)
+* Vitor Augusto Alves de Jesus - [ovitorj](https://github.com/ovitorj)
 
 ### 📝 Professor responsável
 
