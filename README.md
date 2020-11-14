@@ -2,6 +2,13 @@
     <a href="https://developers.google.com/learn/topics/functions">Serverless com o Google Cloud Functions - GCF 🔗 </a>
 </h1>
 
+<p align="center">
+ <a href="#%EF%B8%8F-especificações">Especificações</a> •
+ <a href="#-instruções">Instruções</a> • 
+ <a href="#busts_in_silhouette-alunos">Alunos</a> • 
+ <a href="#-professor-responsável">Professor Responsável</a> 
+</p>
+
 ### ⌨️ Especificações
 
 1. A aplicação móvel deve exibir o mapa da localização atual do telefone.
