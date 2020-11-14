@@ -10,6 +10,21 @@
 4. A função lambda deve verificar se o aparelho se encontra a menos de 100 metros de alguma unidade da PUC Minas e retornar para o celular a mensagem
 **"Bem vindo à PUC Minas unidade " + <nome da unidade mais próxima>.**
 
+### 🛠 Instruções
+
+1. Endpoint do google cloud function: https://us-central1-clean-axiom-294822.cloudfunctions.net/distances
+2. Parâmetros: 	
+	- lat_s
+	- lng_s
+	- lat_d
+	- lng_d
+3. Exemplo:
+```
+https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=-19.9333&lng_s=-43.9371&lat_d=-19.9334&lng_d=-43.9368
+```
+4. Na plataforma do Firebase o recurso *Cloud Firestore* está armazenado os campus pertencentes a PUC MINAS, contendo os campos de latitude, longitude e o nome do campus.
+![image](https://user-images.githubusercontent.com/30940498/99135530-6ff3bf00-2601-11eb-8992-4b83612e3605.png)
+
 ### :busts_in_silhouette: Alunos
 
 * Matheus Santos Rosa Carneiro - [mcarneirobug](https://github.com/mcarneirobug)
