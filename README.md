@@ -35,6 +35,12 @@ https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=-19.93
 4. Na plataforma do Firebase o recurso *Cloud Firestore* está armazenado os campus pertencentes a PUC MINAS, contendo os campos de latitude, longitude e o nome do campus.
 ![image](https://user-images.githubusercontent.com/30940498/99135530-6ff3bf00-2601-11eb-8992-4b83612e3605.png)
 
+### ✋🏻 Dependências
+
+- IDE (Visual Studio Code / Android Studio).
+- Emulador (Android Studio AVD / Genymotion).
+
+
 ### :busts_in_silhouette: Alunos
 
 * Matheus Santos Rosa Carneiro - [mcarneirobug](https://github.com/mcarneirobug)
