@@ -22,6 +22,9 @@
 ```
 https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=-19.9333&lng_s=-43.9371&lat_d=-19.9334&lng_d=-43.9368
 ```
+
+![image](https://user-images.githubusercontent.com/30940498/99136116-00320400-2602-11eb-9d0d-1d3307bf8f15.png)
+
 4. Na plataforma do Firebase o recurso *Cloud Firestore* está armazenado os campus pertencentes a PUC MINAS, contendo os campos de latitude, longitude e o nome do campus.
 ![image](https://user-images.githubusercontent.com/30940498/99135530-6ff3bf00-2601-11eb-8992-4b83612e3605.png)
 
