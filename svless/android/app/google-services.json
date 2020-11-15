@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "61263652134",
+    "firebase_url": "https://serverless-ldamd.firebaseio.com",
+    "project_id": "serverless-ldamd",
+    "storage_bucket": "serverless-ldamd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61263652134:android:03a9f3fca4078a452e0de7",
+        "android_client_info": {
+          "package_name": "br.pucminas.ldamd.fireflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61263652134-pp31c9sga0uph0e76fo36ub5v4a4s706.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5ehkxeVvE3cfkFrYD1BQk2PkIHTGfzo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61263652134-pp31c9sga0uph0e76fo36ub5v4a4s706.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
