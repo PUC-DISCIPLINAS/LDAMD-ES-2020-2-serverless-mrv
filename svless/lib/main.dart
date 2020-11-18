@@ -1,15 +1,15 @@
-// import 'dart:convert';
-// import 'dart:ffi';
-// import 'dart:io';
-// import 'dart:async';
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:location_permissions/location_permissions.dart';
-// import 'package:geocoding/geocoding.dart';
+import 'package:location_permissions/location_permissions.dart';
+import 'package:geocoding/geocoding.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -48,9 +48,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   GoogleMapController mapController;
 
-   final LatLng _center = const LatLng(45.521563, -122.677433);
+  static LatLng _currentPosition;
 
-  // static LatLng _currentPosition;
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+    _listenUserLocation();
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -63,49 +68,24 @@ class _MyHomePageState extends State<MyHomePage> {
    * ao seu destino.
    */
 
-  // void _showAlert(BuildContext context, String campus) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text("Você chegou!"),
-  //         content: Text("Bem vindo(a) à PUC Minas unidade " + campus),
-  //         actions: [
-  //           FlatButton(
-  //               onPressed: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //               child: Text("FECHAR"))
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // /*
-  //  * Widget responsável por exibir o mapa com a
-  //  * localização do usuário
-  //  */
-  // Widget _userLocation() {
-  //   GoogleMapController mapController;
-
-  //   return Scaffold(
-  //     body: Stack(
-  //       children: <Widget>[
-  //         GoogleMap(
-  //             mapType: MapType.normal,
-  //             myLocationEnabled: true,
-  //             compassEnabled: true,
-  //             initialCameraPosition: CameraPosition(
-  //               target: LatLng(
-  //                   _currentPosition.latitude, _currentPosition.longitude),
-  //               zoom: 10.0,
-  //             ),
-  //             onMapCreated: _onMapCreated),
-  //       ],
-  //     ),
-  //   );
-  // }
+  void _showAlert(BuildContext context, String campus) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Você chegou!"),
+          content: Text("Bem vindo(a) à PUC Minas unidade " + campus),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("FECHAR"))
+          ],
+        );
+      },
+    );
+  } // end _showAlert()
 
   /*
    * Método responsável por rastrear o usuário pegando suas coordenadas
@@ -123,6 +103,32 @@ class _MyHomePageState extends State<MyHomePage> {
   //           });
   // }
 
+  _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    setState(() {
+      _currentPosition = LatLng(position.latitude, position.longitude);
+    });
+  } // end _getUserLocation()
+
+  _listenUserLocation() {
+
+    var locationOptions = LocationOptions(
+      accuracy: LocationAccuracy.best, timeInterval: 1000, distanceFilter: 50
+    );
+    
+    Geolocator.getPositionStream()
+      .listen((position) {
+          setState(() {
+            _currentPosition = LatLng(position.latitude, position.longitude);
+          });
+          _tryCheckIn();
+      });
+  } // end _listenUserLocation()
+
+  _tryCheckIn() async {
+    await findCampusAround(_currentPosition);
+  }
+
   /*
    * QuerySnapShot é retornado uma consulta de coleção e permite que inspecione 
    * essa coleção.
@@ -135,62 +141,65 @@ class _MyHomePageState extends State<MyHomePage> {
    * instantâneo sempre será retornado.
    * 
    */
-  // findCampusAround(LatLng currentPosition) async {
-  //   var lat1, long1, lat2, long2;
+  findCampusAround(LatLng currentPosition) async {
+    
+    var lat1, long1, lat2, long2;
 
-  //   lat1 = currentPosition.latitude;
-  //   long1 = currentPosition.longitude;
+    lat1 = currentPosition.latitude;
+    long1 = currentPosition.longitude;
 
-  //   FirebaseFirestore.instance
-  //       .collection('campus')
-  //       .get()
-  //       .then((QuerySnapshot querySnapshot) => {
-  //             querySnapshot.docs.forEach((doc) async {
-  //               // Traduzir as coordenadas de latitude e longitude em um endereço
-  //               // List<Placemark> placemark = await placemarkFromCoordinates(
-  //               //   doc["latitude"], doc["longitude"]);
+    FirebaseFirestore.instance
+        .collection('campus')
+        .get()
+        .then((QuerySnapshot querySnapshot) => {
+              querySnapshot.docs.forEach((doc) async {
+                // Traduzir as coordenadas de latitude e longitude em um endereço
+                // List<Placemark> placemark = await placemarkFromCoordinates(
+                //   doc["latitude"], doc["longitude"]);
 
-  //               lat2 = doc["latitude"];
-  //               long2 = doc["longitude"];
+                lat2 = doc["latitude"];
+                long2 = doc["longitude"];
 
-  //               String url =
-  //                   "https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=" +
-  //                       lat1.toString() +
-  //                       "&lng_s=" +
-  //                       long1.toString() +
-  //                       "&lat_d=" +
-  //                       lat2.toString() +
-  //                       "&lng_d=" +
-  //                       long2.toString();
+                String url =
+                    "https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=" +
+                        lat1.toString() +
+                        "&lng_s=" +
+                        long1.toString() +
+                        "&lat_d=" +
+                        lat2.toString() +
+                        "&lng_d=" +
+                        long2.toString();
 
-  //               var httpClient = new HttpClient();
+                var httpClient = new HttpClient();
 
-  //               try {
-  //                 var request = await httpClient.getUrl(Uri.parse(url));
-  //                 var response = await request.close();
-  //                 if (response.statusCode == HttpStatus.ok) {
-  //                   var json = await response.transform(utf8.decoder).join();
-  //                   var data = jsonDecode(json);
-  //                   var result = data["distance"] as int;
+                try {
+                  var request = await httpClient.getUrl(Uri.parse(url));
+                  var response = await request.close();
+                  if (response.statusCode == HttpStatus.ok) {
+                    var json = await response.transform(utf8.decoder).join();
+                    var data = jsonDecode(json);
+                    var result = data["distance"] as double;
 
-  //                   if (result <= 100) {
-  //                     setState(() {
-  //                       _showAlert(context, doc["nome"]);
-  //                     });
-  //                     return true;
-  //                   }
-  //                   return false;
-  //                 } else {
-  //                   // ignore: unnecessary_statements
-  //                   'Error getting IP address:\nHttp status ${response.statusCode}';
-  //                 }
-  //               } catch (exception) {
-  //                 // result = 'Failed getting IP address';
-  //                 print(exception);
-  //               }
-  //             })
-  //           });
-  // }
+                    if (result <= 100) {
+                      setState(() {
+                        _showAlert(context, doc["nome"]);
+                      });
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    // ignore: unnecessary_statements
+                    'Error getting IP address:\nHttp status ${response.statusCode}';
+                  }
+                } catch (exception) {
+                  // result = 'Failed getting IP address';
+                  print(exception);
+                }
+              })
+        });
+  }
+  
 
   // @override
   // Widget build(BuildContext context) {
@@ -225,15 +234,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Maps Sample App'),
+          title: Text('PUC SPOT MINAS'),
           backgroundColor: Colors.green[700],
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+            target: _currentPosition,
+            zoom: 15,
           ),
+          zoomGesturesEnabled: true,
+          myLocationEnabled: true,
+          compassEnabled: true,
+          zoomControlsEnabled: false,
         ),
       ),
     );
