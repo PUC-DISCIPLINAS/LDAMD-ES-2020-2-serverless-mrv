@@ -50,6 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static LatLng _currentPosition;
 
+  int _dialog = 0;
+
   @override
   void initState() {
     super.initState();
@@ -153,10 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
         .get()
         .then((QuerySnapshot querySnapshot) => {
               querySnapshot.docs.forEach((doc) async {
-                // Traduzir as coordenadas de latitude e longitude em um endereço
-                // List<Placemark> placemark = await placemarkFromCoordinates(
-                //   doc["latitude"], doc["longitude"]);
-
+                
                 lat2 = doc["latitude"];
                 long2 = doc["longitude"];
 
@@ -181,9 +180,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     var result = data["distance"] as double;
 
                     if (result <= 100) {
-                      setState(() {
-                        _showAlert(context, doc["nome"]);
-                      });
+                      if(_dialog == 0) {
+                        setState(() {
+                          _showAlert(context, doc["nome"]);
+                        });
+                        _dialog = 1;
+                      }
                       return true;
                     } else {
                       return false;
@@ -199,37 +201,31 @@ class _MyHomePageState extends State<MyHomePage> {
               })
         });
   }
-  
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('PUC Spot Minas'),
-  //     ),
-  //     body: _currentPosition == null
-  //         ? Container(
-  //             child: Center(
-  //               child: CircularProgressIndicator(),
-  //             ),
-  //           )
-  //         : Container(
-  //             child: GoogleMap(
-  //               initialCameraPosition: CameraPosition(
-  //                 target: _center,
-  //                 zoom: 15,
-  //               ),
-  //               onMapCreated: _onMapCreated,
-  //               zoomGesturesEnabled: true,
-  //               myLocationEnabled: true,
-  //               compassEnabled: true,
-  //               zoomControlsEnabled: false,
-  //             ),
-  //           ),
-  //   ); // This trailing comma makes auto-formatting nicer for build methods.
+  // verifyLocations() async {
+
+  //   int aux = 0;
+  //   bool response = false;
+
+  //   response = await findCampusAround(_currentPosition);
+
+  //   if(response) {
+  //     aux = 1;
+  //   }
+
+  //   if(aux == 1) {
+  //     if(_dialog == 0) {
+  //       _showAlert(context, "achei");
+  //       _dialog = 1;
+  //     }
+  //   } else {
+  //     _dialo
+  //   }
+
+
   // }
-
-   @override
+ 
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -251,6 +247,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 
 }
