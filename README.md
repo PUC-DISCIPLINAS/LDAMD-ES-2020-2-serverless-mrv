@@ -53,5 +53,5 @@ https://us-central1-clean-axiom-294822.cloudfunctions.net/distances?lat_s=-19.93
 * Hugo Bastos de Paula - [hugodepaula](https://github.com/hugodepaula)
 
 <h4 align="center"> 
-	🚧 Serveless GCF 🚀 em andamento... 🚧
+	🚧 Serveless GCF 🚀 finalizado... 🚧
 </h4>
