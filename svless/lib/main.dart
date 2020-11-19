@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:async';
 
@@ -44,7 +43,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Position _currentPosition;
 
   GoogleMapController mapController;
 
@@ -52,10 +50,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _dialog = 0;
 
+  /*
+   * Chamado apenas uma única vez, na criação do Widget, assim que o widget
+   * é inserido na widget tree. 
+   */
   @override
   void initState() {
     super.initState();
-    _getUserLocation();
+    _getUserCurrentLocation();
     _listenUserLocation();
   }
 
@@ -90,46 +92,51 @@ class _MyHomePageState extends State<MyHomePage> {
   } // end _showAlert()
 
   /*
-   * Método responsável por rastrear o usuário pegando suas coordenadas
-   * e toda vez que as coordenadas do usuário mudarem, o método 
-   * verifyLocations é chamado.
+   * Método responsável por rastrear o usuário pegando suas coordenadas.
+   * 
+   * setState() => Exclusivo para widgets Stateful. É utilizado para alterações
+   * de estado. Ao ser chamado o widget será reconstruído já com o novo valor 
+   * da variável.
+   * 
    */
-  // _getCurrentLocation() async {
-  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
-  //       .then((Position position) => {
-  //             setState(() {
-  //               // constructor
-  //               _currentPosition =
-  //                   LatLng(position.latitude, position.longitude);
-  //             })
-  //           });
-  // }
-
-  _getUserLocation() async {
+  
+  _getUserCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
     setState(() {
       _currentPosition = LatLng(position.latitude, position.longitude);
     });
-  } // end _getUserLocation()
+  } // end _getUserCurrentLocation()
+
+  /*
+   * Para ouvir as mudanças de localização utilizamos o getPositionStream() para
+   * o fluxo de recepção, dessa forma recebemos as atualizações de posição.
+   * 
+   * @desiredAccuracy: a precisão dos dados de localização que o aplicativo
+   * vai receber;
+   * 
+   * @timeInterval: a quantidade mínima de tempo que precisa passar antes que 
+   * um evento de atualização seja gerado;
+   * 
+   * @distanceFilter: a distância mínima (medida em metros) que um dispositivo
+   * deve se mover horizontalmente antes que um evento de atualização seja
+   * gerado;
+   */
 
   _listenUserLocation() {
-
-    var locationOptions = LocationOptions(
-      accuracy: LocationAccuracy.best, timeInterval: 1000, distanceFilter: 50
-    );
-    
-    Geolocator.getPositionStream()
-      .listen((position) {
+    Geolocator
+    .getPositionStream(desiredAccuracy: LocationAccuracy.best, 
+      timeInterval: 1000, distanceFilter: 50)
+      .listen((Position position) {
           setState(() {
             _currentPosition = LatLng(position.latitude, position.longitude);
           });
-          _tryCheckIn();
+          _tryCheckInCampus();
       });
   } // end _listenUserLocation()
 
-  _tryCheckIn() async {
-    await findCampusAround(_currentPosition);
-  }
+  _tryCheckInCampus() async {
+    await searchCampus(_currentPosition);
+  } // _tryCheckInCampus()
 
   /*
    * QuerySnapShot é retornado uma consulta de coleção e permite que inspecione 
@@ -143,12 +150,15 @@ class _MyHomePageState extends State<MyHomePage> {
    * instantâneo sempre será retornado.
    * 
    */
-  findCampusAround(LatLng currentPosition) async {
+  searchCampus(LatLng currentPosition) async {
     
     var lat1, long1, lat2, long2;
 
     lat1 = currentPosition.latitude;
     long1 = currentPosition.longitude;
+
+    int aux = 0;
+    bool answer = false;
 
     FirebaseFirestore.instance
         .collection('campus')
@@ -178,14 +188,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     var json = await response.transform(utf8.decoder).join();
                     var data = jsonDecode(json);
                     var result = data["distance"] as double;
-
+                    
                     if (result <= 100) {
-                      if(_dialog == 0) {
-                        setState(() {
-                          _showAlert(context, doc["nome"]);
-                        });
-                        _dialog = 1;
+                      answer = true;
+
+                      if(answer) {
+                        aux = 1;
                       }
+                    
+                      _showAlert(context, doc["nome"]);
+                  
                       return true;
                     } else {
                       return false;
@@ -200,31 +212,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               })
         });
-  }
+  
+    if (aux == 1) {
+      if(_dialog == 0) {
+        _showAlert(context, "achei");
+        _dialog = 1;
+      }
+    } else {
+      _dialog = 0;
+    }
+  } // end searchCampus()
 
-  // verifyLocations() async {
-
-  //   int aux = 0;
-  //   bool response = false;
-
-  //   response = await findCampusAround(_currentPosition);
-
-  //   if(response) {
-  //     aux = 1;
-  //   }
-
-  //   if(aux == 1) {
-  //     if(_dialog == 0) {
-  //       _showAlert(context, "achei");
-  //       _dialog = 1;
-  //     }
-  //   } else {
-  //     _dialo
-  //   }
-
-
-  // }
- 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -233,7 +231,9 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text('PUC SPOT MINAS'),
           backgroundColor: Colors.green[700],
         ),
-        body: GoogleMap(
+        body: _currentPosition == null
+            ? Container(child: Center(child: CircularProgressIndicator()),)
+          : GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _currentPosition,
