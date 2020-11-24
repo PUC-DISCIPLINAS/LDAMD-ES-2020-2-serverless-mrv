@@ -6,6 +6,7 @@
  <a href="#%EF%B8%8F-especificações">Especificações</a> •
  <a href="#-instruções">Instruções</a> • 
  <a href="#cloud-google-cloud-function">Google Cloud Functions</a> • 
+ <a href="#-demonstração">Demonstração</a> • 
  <a href="#-dependências">Dependências</a> • 
  <a href="#busts_in_silhouette-alunos">Alunos</a> • 
  <a href="#-professor-responsável">Professor Responsável</a> 
@@ -98,6 +99,11 @@ def hello_world(request):
 - Algumas métricas disponíveis no site:
 
 ![image](https://user-images.githubusercontent.com/30940498/100148962-3aaa6500-2e7c-11eb-82c0-a1f1d9b7a4cc.png)
+
+
+### :iphone: Demonstração
+
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/30940498/100150439-629ac800-2e7e-11eb-8c11-702c8176ee5e.gif)
 
 
 ### ✋🏻 Dependências
