@@ -6,7 +6,7 @@
  <a href="#%EF%B8%8F-especificações">Especificações</a> •
  <a href="#-instruções">Instruções</a> • 
  <a href="#cloud-google-cloud-function">Google Cloud Functions</a> • 
- <a href="#-demonstração">Demonstração</a> • 
+ <a href="#iphone-demonstração">Demonstração</a> • 
  <a href="#-dependências">Dependências</a> • 
  <a href="#busts_in_silhouette-alunos">Alunos</a> • 
  <a href="#-professor-responsável">Professor Responsável</a> 
