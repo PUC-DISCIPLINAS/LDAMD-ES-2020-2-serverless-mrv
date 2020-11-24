@@ -157,9 +157,6 @@ class _MyHomePageState extends State<MyHomePage> {
     lat1 = currentPosition.latitude;
     long1 = currentPosition.longitude;
 
-    int aux = 0;
-    bool answer = false;
-
     FirebaseFirestore.instance
         .collection('campus')
         .get()
@@ -189,15 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     var data = jsonDecode(json);
                     var result = data["distance"] as double;
                     
-                    if (result <= 100) {
-                      answer = true;
-
-                      if(answer) {
-                        aux = 1;
-                      }
-                    
+                    if (result <= 100) {       
                       _showAlert(context, doc["nome"]);
-                  
                       return true;
                     } else {
                       return false;
@@ -212,15 +202,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               })
         });
-  
-    if (aux == 1) {
-      if(_dialog == 0) {
-        _showAlert(context, "achei");
-        _dialog = 1;
-      }
-    } else {
-      _dialog = 0;
-    }
   } // end searchCampus()
 
   @override
