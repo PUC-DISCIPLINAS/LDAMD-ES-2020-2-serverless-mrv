@@ -48,8 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static LatLng _currentPosition;
 
-  int _dialog = 0;
-
   /*
    * Chamado apenas uma única vez, na criação do Widget, assim que o widget
    * é inserido na widget tree. 
