@@ -1,3 +1,5 @@
+# ![Flutter logo][]
+
 <h1 align="center">
     <a href="https://developers.google.com/learn/topics/functions">Serverless com o Google Cloud Functions - GCF 🔗 </a>
 </h1>
@@ -129,3 +131,5 @@ As modificações de localização do usuário foram realizadas pelo próprio em
 <h4 align="center"> 
 	🚧 Serveless GCF 🚀 finalizado... 🚧
 </h4>
+
+[Flutter logo]: https://raw.githubusercontent.com/flutter/website/master/src/_assets/image/flutter-lockup.png
