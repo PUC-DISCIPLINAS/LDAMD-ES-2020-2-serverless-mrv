@@ -107,6 +107,9 @@ def hello_world(request):
 
 Link da demonstração: https://youtu.be/9dXjdV5qtLg
 
+As modificações de localização do usuário foram realizadas pelo próprio emulador:
+![image](https://user-images.githubusercontent.com/30940498/100460726-6dd03c80-30a6-11eb-9417-b520b5d584a4.png)
+
 ### ✋🏻 Dependências
 
 - IDE (Visual Studio Code / Android Studio).
